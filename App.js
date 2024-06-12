@@ -1,7 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
+import { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { supabase } from './conexao';
 
 export default function App() {
+  const [descricaoDigitada, setDescricaoDigitada] = useState("");
+  const [valorDigitado, setValorDigitado] = useState("");
+  // Criar uma função para inserir no Banco de dados
+  const cadastrarConta = async(desc, vl)=>{
+    const {error} = await supabase.from("tb_contas")
+    .insert({coluna_descricao: desc, coluna_valor: vl, coluna_status: false});
+
+    if(error){
+      alert("Falha ao cadastrar!")
+    }else{
+      alert("Cadastrado com sucesso!")
+    }
+
+  }
+
   return (
     <View style={styles.container}>
       
@@ -9,14 +26,16 @@ export default function App() {
       <TextInput
         style={styles.caixaDeTexto}
         placeholder='Descrição aqui'
+        onChangeText={(texto)=>setDescricaoDigitada(texto)}
       />
       <TextInput
         style={styles.caixaDeTexto}
         placeholder='Valor aqui'
+        onChangeText={(texto)=>setValorDigitado(texto)}
       />
       <Button
         title="Cadastrar"
-        onPress={()=>{}}
+        onPress={()=>{cadastrarConta(descricaoDigitada, valorDigitado)}}
       />
 
 
