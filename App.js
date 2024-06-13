@@ -7,6 +7,20 @@ export default function App() {
   const [descricaoDigitada, setDescricaoDigitada] = useState("");
   const [valorDigitado, setValorDigitado] = useState("");
   const [dados, setDados] = useState([]);
+  
+  //Função de deletar dados no Banco de Dados
+  const deletarConta = async(id) =>{
+       const {error} = await supabase.from("tb_contas")
+       .delete().match({id}) 
+
+       if(error){
+          alert("Falha ao deletar!")
+       }else{
+          alert("Conta deletada com sucesso!")
+          consultarDados()
+       }
+  }
+
   //Função para consultar os dados no Banco de Dados
   const consultarDados = async() => {
       const {data, error} = await supabase.from("tb_contas")
@@ -48,27 +62,28 @@ export default function App() {
         style={styles.caixaDeTexto}
         placeholder='Descrição aqui'
         onChangeText={(texto)=>setDescricaoDigitada(texto)}
-        onChangeText={(texto)=>setDescricaoDigitada(texto)}
       />
 
       <TextInput
         style={styles.caixaDeTexto}
         placeholder='Valor aqui'
         onChangeText={(texto)=>setValorDigitado(texto)}
-        onChangeText={(texto)=>setValorDigitado(texto)}
       />
       <Button
         title="Cadastrar"
-        onPress={()=>{cadastrarConta(descricaoDigitada, valorDigitado)}}
         onPress={()=>{cadastrarConta(descricaoDigitada, valorDigitado)}}
       />
       <ScrollView style={{width:"100%"}}>
         {/* Mapear os dados e dividir em itens */}
         {dados.map((item)=>(
             <View style={styles.caixaContas}>
+              <Text>Nº: {item.id}</Text>
               <Text>{item.coluna_descricao}</Text>
               <Text>R$ {item.coluna_valor}</Text>
-              <Text> {item.coluna_status} </Text>
+              <Button
+                  title='Excluir'
+                  onPress={()=>{deletarConta(item.id)}}
+              />
             </View>
         ))}
       </ScrollView>
@@ -78,6 +93,7 @@ export default function App() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   caixaContas:{
       width: "90%",
