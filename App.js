@@ -7,8 +7,9 @@ export default function App() {
   const [descricaoDigitada, setDescricaoDigitada] = useState("");
   const [valorDigitado, setValorDigitado] = useState("");
   const [dados, setDados] = useState([]);
-  
+
   //Função de deletar dados no Banco de Dados
+  
   const deletarConta = async(id) =>{
        const {error} = await supabase.from("tb_contas")
        .delete().match({id}) 
