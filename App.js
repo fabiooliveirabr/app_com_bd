@@ -48,15 +48,18 @@ export default function App() {
         style={styles.caixaDeTexto}
         placeholder='Descrição aqui'
         onChangeText={(texto)=>setDescricaoDigitada(texto)}
+        onChangeText={(texto)=>setDescricaoDigitada(texto)}
       />
 
       <TextInput
         style={styles.caixaDeTexto}
         placeholder='Valor aqui'
         onChangeText={(texto)=>setValorDigitado(texto)}
+        onChangeText={(texto)=>setValorDigitado(texto)}
       />
       <Button
         title="Cadastrar"
+        onPress={()=>{cadastrarConta(descricaoDigitada, valorDigitado)}}
         onPress={()=>{cadastrarConta(descricaoDigitada, valorDigitado)}}
       />
       <ScrollView style={{width:"100%"}}>
